@@ -49,7 +49,7 @@ function error(){
 function showPrevious() {
     //Use local storage to display old searches
     if (previousLoc) {
-        $("#lastSearch").empty();
+        $("#lastSearches").empty();
         var btns = $("<div>").attr("class", "list-group");
         for (var i = 0; i < previousLoc.length; i++) {
             var locBtn = $("<a>").attr("href", "#").attr("id", "loc-btn").text(previousLoc[i]);
@@ -61,7 +61,7 @@ function showPrevious() {
             }
             btns.prepend(locBtn);
         }
-        $("#lastSearch").append(btns);
+        $("#lastSearches").append(btns);
     }
 }
 
@@ -88,7 +88,7 @@ function getCurrent(city) {
         currCard.append(cardRow);
 
         //grab icon that goes with the weather
-        var iconURL = "https://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
+        var iconURL = "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png";
 
         var imgDiv = $("<div>").attr("class", "col-md-4").append($("<img>").attr("src", iconURL).attr("class", "card-img"));
         cardRow.append(imgDiv);
@@ -107,5 +107,35 @@ function getCurrent(city) {
         cardBody.append($("<p>").attr("class", "card-text").text("Humidity: " + response.main.humidity + "%"));
         //Show Wind Speed
         cardBody.append($("<p>").attr("class", "card-text").text("Wind Speed: " + response.wind.speed + " MPH"));
-    });
+
+//UV Index
+var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=f4d4de4a53ae884dfc78b96e481c919f&lat=" + response.coord.lat + "&lon=" + response.coord.lat;
+$.ajax({
+    url: uvURL,
+    method: "GET"
+}).then(function (uvresponse) {
+    var uvindex = uvresponse.value;
+    var bgcolor;
+    if (uvindex <= 3) {
+        bgcolor = "green";
+    }
+    else if (uvindex >= 3 || uvindex <= 6) {
+        bgcolor = "yellow";
+    }
+    else if (uvindex >= 6 || uvindex <= 8) {
+        bgcolor = "orange";
+    }
+    else {
+        bgcolor = "red";
+    }
+    var uvdisp = $("<p>").attr("class", "card-text").text("UV Index: ");
+    uvdisp.append($("<span>").attr("class", "uvindex").attr("style", ("background-color:" + bgcolor)).text(uvindex));
+    cardBody.append(uvdisp);
+
+});
+
+cardRow.append(textDiv);
+getForecast(response.id);
+
+});
 }
