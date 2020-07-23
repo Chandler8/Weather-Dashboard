@@ -16,6 +16,71 @@ h3 {
     text-align: center;
 }
 
+.row-mt-3 {
+    width: 100%;
+}
 
+.col-md-3 {
+    background-color: rgb(242, 241, 241);
+}
 
+i {
+    color: white;
+}
+
+.forecast {
+    margin-top: 20px;
+    margin: 15px;
+    color: #fff;
+    border-radius: 10px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.card-header {
+    text-align: center;
+}
+
+card-title {
+    text-align: center;
+}
+
+.card-img {
+    opacity: 100%;
+}
+
+.col-md-8 {
+    text-align: center;
+}
+
+.one-fifth {
+    padding-bottom: 10%;
+}
+ 
+/* Media Queries */
+
+@media (max-width: 690px) {
+    .btn {
+      font-size: 1rem;
+      margin: 16px 0px 0px 0px;
+      padding: 10px 15px;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .btn {
+      font-size: 0.8rem;
+    }
+  }
+
+  /* Portrait and Landscape */
+@media only screen 
+and (min-device-width: 375px) 
+and (max-device-width: 812px) 
+and (-webkit-min-device-pixel-ratio: 3) { 
+
+}
 
