@@ -1,2 +1,21 @@
-/* TBD */
+.navbar-brand {
+  margin: 0 auto;
+}
+
+.searcharea {
+    background-color: thistle;
+    padding: 20px;
+    opacity: 90%;
+}
+
+#searchbtn{
+    padding: 5px 3px 1px 6px;
+}
+
+h3 {
+    text-align: center;
+}
+
+
+
 
