@@ -88,7 +88,7 @@ function getCurrent(city) {
         currCard.append(cardRow);
 
         //grab icon that goes with the weather
-        var iconURL = "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png";
+        var iconURL = "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
 
         var imgDiv = $("<div>").attr("class", "col-md-4").append($("<img>").attr("src", iconURL).attr("class", "card-img"));
         cardRow.append(imgDiv);
@@ -150,7 +150,7 @@ function getForecast(city) {
     }).then(function (response) {
         //Integrate new container to hold the forecast
         var newrow = $("<div>").attr("class", "forecast");
-        $("#earthforecast").append(newrow);
+        $("#weatherOutlook").append(newrow);
 
         //Now we have to loop back through the array
         for (var i = 0; i < response.list.length; i++) {
@@ -164,7 +164,7 @@ function getForecast(city) {
                 var cardHead = $("<div>").attr("class", "card-header").text(moment(response.list[i].dt, "X").format("MMM Do"));
                 newCard.append(cardHead);
 
-                var cardImg = $("<img>").attr("class", "card-img-top").attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png");
+                var cardImg = $("<img>").attr("class", "card-img-top").attr("src", "https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
                 newCard.append(cardImg);
 
                 var bodyDiv = $("<div>").attr("class", "card-body");
@@ -176,3 +176,44 @@ function getForecast(city) {
         }
     });
 }
+
+
+function clear() {
+    //clear weather
+    $("#weatherOutlook").empty();
+}
+
+function saveLoc(loc){
+    //puts previous cities into our saved array
+    if (previousLoc === null) {
+        previousLoc = [loc];
+    }
+    else if (previousLoc.indexOf(loc) === -1) {
+        previousLoc.push(loc);
+    }
+    //new array gets saved via Local Storage
+    localStorage.setItem("weathercities", JSON.stringify(previousLoc));
+    showPrevious();
+}
+
+$("#searchbtn").on("click", function () {
+    event.preventDefault();
+    var loc = $("#searchinput").val().trim();
+    if (loc !== "") {
+        clear();
+        currentLoc = loc;
+        saveLoc(loc);
+        $("#searchinput").val("");
+        getCurrent(loc);
+    }
+});
+
+$(document).on("click", "#loc-btn", function () {
+    clear();
+    currentLoc = $(this).text();
+    showPrevious();
+    getCurrent(currentLoc);
+});
+
+initialize();
+
