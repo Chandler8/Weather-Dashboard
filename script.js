@@ -139,3 +139,40 @@ getForecast(response.id);
 
 });
 }
+
+// Grab the forecast
+function getForecast(city) {
+    //Integrate the 5 day forecast
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + city + "&APPID=f4d4de4a53ae884dfc78b96e481c919f&units=imperial";
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        //Integrate new container to hold the forecast
+        var newrow = $("<div>").attr("class", "forecast");
+        $("#earthforecast").append(newrow);
+
+        //Now we have to loop back through the array
+        for (var i = 0; i < response.list.length; i++) {
+            if (response.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+                var newCol = $("<div>").attr("class", "one-fifth");
+                newrow.append(newCol);
+
+                var newCard = $("<div>").attr("class", "card text-white bg-primary");
+                newCol.append(newCard);
+
+                var cardHead = $("<div>").attr("class", "card-header").text(moment(response.list[i].dt, "X").format("MMM Do"));
+                newCard.append(cardHead);
+
+                var cardImg = $("<img>").attr("class", "card-img-top").attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png");
+                newCard.append(cardImg);
+
+                var bodyDiv = $("<div>").attr("class", "card-body");
+                newCard.append(bodyDiv);
+
+                bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response.list[i].main.temp + " &#8457;"));
+                bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response.list[i].main.humidity + "%"));
+            }
+        }
+    });
+}
